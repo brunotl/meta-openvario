@@ -21,6 +21,7 @@ do
 	--begin 3 4 \
 	--menu "You can use the UP/DOWN arrow keys" 15 50 6 \
 	XCSoar   "Start XCSoar" \
+	LK8000   "Start LK8000" \
 	File   "Copys file to and from OpenVario" \
 	System   "Update, Settings, ..." \
 	Exit   "Exit to the shell" \
@@ -32,6 +33,7 @@ do
 	# make decsion 
 case $menuitem in
 	XCSoar) start_xcsoar;;
+	LK8000) start_lk8000;;
 	File) submenu_file;;
 	System) submenu_system;;
 	Exit) yesno_exit;;
@@ -348,6 +350,11 @@ function start_xcsoar() {
 	sync
 }
 
+function start_lk8000() {
+	/opt/LK8000/bin/LK8000-OPENVARIO
+}
+
+
 function yesno_exit(){
 	dialog --backtitle "Openvario" \
 	--begin 3 4 \
@@ -386,10 +393,10 @@ function yesno_power_off(){
 
 setfont ter-124b.psf.gz
 
-DIALOG_CANCEL=1 dialog --nook --nocancel --pause "Starting XCSoar ... \\n Press [ESC] for menu" 10 30 $TIMEOUT 2>&1
+DIALOG_CANCEL=1 dialog --nook --nocancel --pause "Starting LK8000 ... \\n Press [ESC] for menu" 10 30 $TIMEOUT 2>&1
 
 case $? in
-	0) start_xcsoar;;
+	0) start_lk8000;;
 	*) main_menu;;
 esac
 main_menu

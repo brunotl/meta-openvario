@@ -13,6 +13,7 @@ IMAGE_INSTALL += "\
     variod-testing \
     ovmenu-ng \
     openvario-autologin \
+    lk8000 \
 "
 
 export IMAGE_BASENAME = "openvario-image-testing"
