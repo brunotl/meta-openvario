@@ -12,6 +12,10 @@ source /opt/conf/*.conf
 # trap and delete temp files
 trap "rm $INPUT;rm /tmp/tail.$$; exit" SIGHUP SIGINT SIGTERM
 
+if [ -z "${GLIDE_COMPUTER}" ]; then
+    GLIDE_COMPUTER=LK8000
+fi
+
 main_menu () {
 while true
 do
@@ -19,6 +23,7 @@ do
 	dialog --clear --nocancel --backtitle "OpenVario" \
 	--title "[ M A I N - M E N U ]" \
 	--begin 3 4 \
+	--default-item ${GLIDE_COMPUTER} \
 	--menu "You can use the UP/DOWN arrow keys" 15 50 6 \
 	XCSoar   "Start XCSoar" \
 	LK8000   "Start LK8000" \
@@ -32,8 +37,12 @@ do
  
 	# make decsion 
 case $menuitem in
-	XCSoar) start_xcsoar;;
-	LK8000) start_lk8000;;
+	XCSoar|LK8000)
+		GLIDE_COMPUTER=${menuitem}
+		echo "GLIDE_COMPUTER=${GLIDE_COMPUTER}" \
+		    >/opt/conf/glide_conputer.conf
+		${GLIDE_COMPUTER}
+		;;
 	File) submenu_file;;
 	System) submenu_system;;
 	Exit) yesno_exit;;
@@ -340,7 +349,7 @@ function upload_files(){
 	dialog --backtitle "OpenVario" --title "Result" --tailbox /tmp/tail.$$ 30 50
 }
 
-function start_xcsoar() {
+function XCSoar() {
 	/usr/bin/xcsoar_config.sh
 	if [ -z $XCSOAR_LANG ]; then
 		/opt/XCSoar/bin/xcsoar -fly -800x480
@@ -350,10 +359,9 @@ function start_xcsoar() {
 	sync
 }
 
-function start_lk8000() {
+function LK8000() {
 	/opt/LK8000/bin/LK8000-OPENVARIO
 }
-
 
 function yesno_exit(){
 	dialog --backtitle "Openvario" \
@@ -393,10 +401,10 @@ function yesno_power_off(){
 
 setfont ter-124b.psf.gz
 
-DIALOG_CANCEL=1 dialog --nook --nocancel --pause "Starting LK8000 ... \\n Press [ESC] for menu" 10 30 $TIMEOUT 2>&1
+DIALOG_CANCEL=1 dialog --nook --nocancel --pause "Starting glide computer ... \\n Press [ESC] for menu" 10 30 $TIMEOUT 2>&1
 
 case $? in
-	0) start_lk8000;;
+	0) ${GLIDE_COMPUTER};;
 	*) main_menu;;
 esac
 main_menu
