@@ -14,6 +14,8 @@ IMAGE_INSTALL += "\
     ovmenu-ng \
     openvario-autologin \
     lk8000 \
+    lk8000-dbg \
+    packagegroup-core-tools-debug \
 "
 
 export IMAGE_BASENAME = "openvario-image-testing"
