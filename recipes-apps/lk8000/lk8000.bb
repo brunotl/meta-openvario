@@ -33,9 +33,9 @@ RDEPENDS_${PN} = " \
 "
 
 S = "${WORKDIR}/git"
-PR = "r0"
+PR = "r1"
 
-SRC_URI = "git://github.com/brunotl/LK8000.git;protocol=http;branch=master"
+SRC_URI = "git://github.com/LK8000/LK8000.git;protocol=http;branch=v72"
 
 SRCREV = "${AUTOREV}" 
 
